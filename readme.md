@@ -20,7 +20,7 @@ But why is it so poor on the Arduino? Well, let's do some math:
 
 As I mentioned before the Arduino has 2 kB of SRAM which is 2048 Byte and since 1800 Byte are already taken we've only got 248 Byte left to store variables we need for the game to work, which is veeeery few space. So if you plan to program a game for this tiny "console" you'll need to program very carefully not blocking space unnecessarily. However I managed to program "Snake" on it, so it's not impossible :)
 
-One may ask: "But what about those 32 kB of PROGMEM?". We are not able to access those 32kb dynamically but we can use this space to store constants such as strings or the pixel information of the font we'll use to display text.
+One may ask: "But what about those 32 kB of PROGMEM?". We are not able to access those 32kb dynamically but we can use this space to store constants such as strings or the pixel information of the font we'll use to display text. If you're still curious about PROGMEM look at the [Arduino reference about it](https://www.arduino.cc/en/Reference/PROGMEM).
 
 ## Requirements and wiring
 
