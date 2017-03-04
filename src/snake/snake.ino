@@ -1,9 +1,7 @@
 #include <VGAX.h>
 #include <avr/pgmspace.h>
 
-#define FNT_SYMBOLS_COUNT   36
-#define FNT_HEIGHT          5
-#define FNT_BYTE_LENGTH     4
+#include "text.h"
 
 #define COLOUR_WHITE        3
 #define COLOUR_BLUE         2
@@ -23,44 +21,6 @@
 #define DRAW_BORDER         vga.fillrect(0, 0, GAME_WIDTH + GAME_BORDER * 2, GAME_HEIGHT + GAME_BORDER * 2, COLOUR_YELLOW);
 #define CLEAR_GAME          vga.fillrect(GAME_BORDER, GAME_BORDER, GAME_WIDTH, GAME_HEIGHT, COLOUR_BLACK);
 
-const byte fnt_data[FNT_SYMBOLS_COUNT][FNT_BYTE_LENGTH] PROGMEM = {
-  {0b00000000, 0b00111101, 0b10110111, 0b10000011}, //glyph 0
-  {0b00000000, 0b00010110, 0b01001011, 0b10000011}, //glyph 1
-  {0b00000000, 0b00111001, 0b11110011, 0b10000011}, //glyph 2
-  {0b00000000, 0b00111001, 0b11100111, 0b10000011}, //glyph 3
-  {0b00000000, 0b00101101, 0b11100100, 0b10000011}, //glyph 4
-  {0b00000000, 0b00111100, 0b11100111, 0b10000011}, //glyph 5
-  {0b00000000, 0b00111100, 0b11110111, 0b10000011}, //glyph 6
-  {0b00000000, 0b00111001, 0b00100100, 0b10000011}, //glyph 7
-  {0b00000000, 0b00111101, 0b11110111, 0b10000011}, //glyph 8
-  {0b00000000, 0b00111101, 0b11100111, 0b10000011}, //glyph 9
-  {0b00000011, 0b01001111, 0b11001100, 0b10000100}, //glyph A
-  {0b00000111, 0b01001111, 0b01001111, 0b00000100}, //glyph B
-  {0b00000011, 0b01001100, 0b01001011, 0b00000100}, //glyph C
-  {0b00000111, 0b01001100, 0b11001111, 0b00000100}, //glyph D
-  {0b00000000, 0b00111100, 0b11010011, 0b10000011}, //glyph E
-  {0b00000000, 0b00111100, 0b11010010, 0b00000011}, //glyph F
-  {0b00000011, 0b01000101, 0b11001011, 0b00000100}, //glyph G
-  {0b00000100, 0b11001111, 0b11001100, 0b10000100}, //glyph H
-  {0b00000000, 0b00111010, 0b01001011, 0b10000011}, //glyph I
-  {0b00000000, 0b10001000, 0b11001011, 0b00000100}, //glyph J
-  {0b00000100, 0b11010110, 0b01010100, 0b10000100}, //glyph K
-  {0b00000000, 0b00100100, 0b10010011, 0b10000011}, //glyph L
-  {0b10001110, 0b11101011, 0b00011000, 0b10000101}, //glyph M
-  {0b10001110, 0b01101011, 0b00111000, 0b10000101}, //glyph N
-  {0b00000011, 0b01001100, 0b11001011, 0b00000100}, //glyph O
-  {0b00000111, 0b01001111, 0b01000100, 0b00000100}, //glyph P
-  {0b00000011, 0b01001100, 0b11011011, 0b10000100}, //glyph Q
-  {0b00000111, 0b01001111, 0b01001100, 0b10000100}, //glpyh R
-  {0b00000011, 0b11000011, 0b00001111, 0b00000100}, //glpyh S
-  {0b00000000, 0b00111010, 0b01001001, 0b00000011}, //glyph T
-  {0b00000100, 0b11001100, 0b11001011, 0b00000100}, //glyph U
-  {0b00000000, 0b00101101, 0b10110101, 0b00000011}, //glyph V
-  {0b10001100, 0b01101011, 0b01010101, 0b00000101}, //glyph W
-  {0b00000100, 0b11001011, 0b01001100, 0b10000100}, //glpyh X
-  {0b00000000, 0b00101101, 0b10101001, 0b00000011}, //glyph Y
-  {0b00000000, 0b00111001, 0b01010011, 0b10000011}, //glyph Z
-};
 
 const char str_title[] PROGMEM = "SNAKE";
 const char str_game_over[] PROGMEM = "GAME OVER";
@@ -103,72 +63,7 @@ void processInputs() {
 }
 
 
-byte getWidth(const char* text, boolean progmem) {
-  char *pstr = (char*)text;
-  char c;
 
-  byte width = 0;
-  if (progmem){
-   while (c = pgm_read_byte(pstr++)) width += charWidth(c);
-  } else {
-    while (c = *pstr++) width += charWidth(c);
-  }
-
-  return width;
-}
-
-byte charWidth(char c) {
-  if (c == 32) return 3;
-  else {
-    if (c >= 48 && c < 65) c -= 48;
-    if (c >= 65 && c < 97) c -= 55;
-    byte a = pgm_read_byte((byte*)fnt_data + (c + 1) * FNT_BYTE_LENGTH - 1);
-    return 1 + (a & 7);
-  }
-}
-
-
-byte drawCharacter(char c, byte x, byte y, byte colour) {
-  if (c == 32) return 3;
-
-  if (c >= 48 && c < 65) c -= 48; //char code 48 to index 0 in fnt_data
-  if (c >= 65 && c < 97) c -= 55; //char code 65 to index 10 in fnt_data
-
-  if (c >= 0 && c < FNT_SYMBOLS_COUNT) {
-    unsigned long glyph = 0;
-    byte bytelength = FNT_BYTE_LENGTH; //32 bit
-    while (bytelength--) glyph |= (unsigned long)pgm_read_byte((byte*)fnt_data + c * FNT_BYTE_LENGTH + bytelength) << (8 * (FNT_BYTE_LENGTH - bytelength - 1));
-
-    byte cwidth = glyph & 0b111; //byte is unsigned
-
-    glyph >>= 7;
-
-    byte gheight = FNT_HEIGHT, gwidth;
-    while (gheight--) {
-      gwidth = cwidth;
-      while (gwidth--) {
-        if (glyph >> (cwidth * gheight + gwidth) & 1) vga.putpixel(x + cwidth - gwidth - 1, y + FNT_HEIGHT - gheight - 1, colour);
-      }
-    }
-
-    return cwidth + 1;
-  }
-  return 0;
-}
-
-void drawTextPROGMEM(const char* text, byte x, byte y, byte colour) {
-  char *pstr = (char*)text;
-  byte dx = x;
-  char c;
-  while (c = pgm_read_byte(pstr++)) dx += drawCharacter(c, dx, y, colour);
-}
-
-void drawText(const char* text, byte x, byte y, byte colour) {
-  char *pstr = (char*)text;
-  byte dx = x;
-  char c;
-  while (c = *pstr++) dx += drawCharacter(c, dx, y, colour);
-}
 
 void reset() {
   vga.clear(COLOUR_BLACK);
