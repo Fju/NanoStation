@@ -1,6 +1,11 @@
+#ifndef TEXT_H
+#define TEXT_H
+
+
 #ifdef ARDUINO
 #include <Arduino.h>
 #endif
+#include <stdlib.h>
 
 #define FNT_SYMBOLS_COUNT    36
 #define FNT_HEIGHT           5
@@ -54,3 +59,7 @@ byte drawCharacter(char c, byte x, byte y, byte colour);
 void drawTextPROGMEM(const char* text, byte x, byte y, byte colour);
 
 void drawText(const char* text, byte x, byte y, byte colour);
+
+void drawInt(int number, byte x, byte y, byte color);
+
+#endif /* TEXT_H */

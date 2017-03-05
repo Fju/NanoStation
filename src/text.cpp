@@ -68,3 +68,9 @@ void drawText(const char* text, byte x, byte y, byte colour) {
 	char c;
 	while (c = *pstr++) dx += drawCharacter(c, dx, y, colour);
 }
+
+void drawInt(int number, byte x, byte y, byte color) {
+	char buf[6];
+	itoa(number, buf, 10);
+	drawText(buf, x, y, color);
+}

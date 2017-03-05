@@ -2,17 +2,12 @@
 #include <avr/pgmspace.h>
 
 #include "text.h"
+#include "nanostation.h"
 
 #define COLOUR_WHITE        3
 #define COLOUR_BLUE         2
 #define COLOUR_YELLOW       1
 #define COLOUR_BLACK        0
-
-#define PIN_STICK_X         A1
-#define PIN_STICK_Y         A2
-#define PIN_STICK_BUTTON    5
-#define PIN_BUTTON_A        11
-#define PIN_BUTTON_B        12
 
 #define GAME_BORDER         2
 #define GAME_WIDTH          (80 - GAME_BORDER * 2)
