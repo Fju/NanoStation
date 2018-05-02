@@ -7,7 +7,7 @@
 #endif
 #include <stdlib.h>
 
-#define FNT_SYMBOLS_COUNT    36
+#define FNT_SYMBOLS_COUNT    37
 #define FNT_HEIGHT           5
 #define FNT_BYTE_LENGTH      4
 
@@ -48,6 +48,7 @@ const byte fnt_data[FNT_SYMBOLS_COUNT][FNT_BYTE_LENGTH] PROGMEM = {
 	{0b00000100, 0b11001011, 0b01001100, 0b10000100}, //glpyh X
 	{0b00000000, 0b00101101, 0b10101001, 0b00000011}, //glyph Y
 	{0b00000000, 0b00111001, 0b01010011, 0b10000011}, //glyph Z
+	{0b00000000, 0b00000000, 0b11100000, 0b00000011}, //glyph -
 };
 
 byte getWidth(const char* text, boolean progmem);

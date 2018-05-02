@@ -32,6 +32,7 @@ byte drawCharacter(char c, byte x, byte y, byte colour) {
 
 	if (c >= 48 && c < 65) c -= 48; //char code 48 to index 0 in fnt_data
 	if (c >= 65 && c < 97) c -= 55; //char code 65 to index 10 in fnt_data
+	if (c == 45) c = 36;
 
 	if (c >= 0 && c < FNT_SYMBOLS_COUNT) {
 		unsigned long glyph = 0;

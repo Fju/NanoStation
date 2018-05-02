@@ -2,20 +2,27 @@
 #define ENTITY_H
 
 #include <VGAX.h>
-#include <avr/pgmspace.h>
+#include "vector.h"
 
 class Entity {
 public:
-	byte x;
-	byte y;
+	char x;
+	char y;
 protected:
 	byte width;
 	byte height;
 
 public:
-	Entity(byte x, byte y, byte width, byte height);
+	Entity(signed char x_, signed char y_, byte width_, byte height_);
 	void draw(byte color);
-	boolean collide(byte vec_x, byte vec_y, Entity & other);
+	boolean collide(Vector vel, Entity & other, Vector & pen_vec);
+	inline signed char get_max_x() {
+		return this->x + this->width;
+	}
+	inline signed char get_max_y() {
+		return this->y + this->height;
+	}
+	Vector get_pen_vec();
 };
 
 #endif /* ENTITY_H */
