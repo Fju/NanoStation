@@ -1,21 +1,22 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-#include <VGAX.h>
-#include "entity.h"
 #include "vector.h"
+#include <VGAX.h>
 
-class Character : public Entity {
+class Character {
 public:
 	byte prev_x;
 	byte prev_y;
+	byte x;
+	byte y;
 
 	Vector vel;
 
 public:
-	Character();
-	void update(Entity platforms[], byte amount);
+	Character(signed char x_, signed char y_);
 	void draw();
+	void update();
 };
 
 #endif /* CHARACTER_H */
