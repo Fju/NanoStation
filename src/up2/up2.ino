@@ -11,10 +11,10 @@
 #define BLINK_INTERVAL 20
 
 Platform platforms[PLATFORM_AMOUNT] = {
+	Platform(0, 50, 20, 5),
 	Platform(30, 30, 20, 20),
 	Platform(70, 30, 20, 20),
 	Platform(80, 0, 40, 20),
-	Platform(0, 50, 20, 5)
 };
 
 Character character = Character(0, 0);
@@ -27,28 +27,26 @@ void draw_platforms(byte color) {
 }
 
 bool platform_color = 0;
-byte platform_blink_counter = 0;
+byte platform_blink_counter = BLINK_INTERVAL; // so that it triggers the first paint
 
 void setup() {
 	VGAX::begin();
 	VGAX::clear(COLOR_BLUE);
-	draw_platforms(platform_color);
 }
 
 
 void loop() {
-	if (platform_blink_counter == BLINK_INTERVAL) platform_color = !platform_color;
+	// platform color updates
+	if (platform_blink_counter == BLINK_INTERVAL) {
+		platform_color = (platform_color+3)%6; // more efficient lel
+		draw_platforms(platform_color);
+	}
 	platform_blink_counter = (platform_blink_counter + 1) % BLINK_INTERVAL + 1;
 
-	// logging
-	// VGAX::fillrect(10, 10, 50, 30, COLOR_BLUE);
-	// drawInt(character.x, 10, 10, COLOR_YELLOW);
-	// drawInt(character.y, 10, 20, COLOR_YELLOW);
-
-	// updates
+	// character pos updates
 	character.update();
 
-	draw_platforms(platform_color);
+	// paints
 	character.draw();
 
 	VGAX::delay(33);
