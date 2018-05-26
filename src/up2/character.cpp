@@ -15,22 +15,25 @@ void Character::draw() {
 	VGAX::putpixel(this->x, this->y, COLOR_WHITE);
 }
 
-bool bresenham(char x0, char y0, char x1, char y1, char * collisionX, char * collisionY) {
+char bresenham(char x0, char y0, char x1, char y1, char * collisionX, char * collisionY) {
 	char dx = abs(x1-x0), sx = x0<x1 ? 1 : -1;
 	char dy = abs(y1-y0), sy = y0<y1 ? 1 : -1;
 	char err = (dx>dy ? dx : -dy)/2, e2;
+
+	char return_color = -1;
 
 	for(;;) {
 		if (x0==x1 && y0==y1) {
 			*collisionX = x0;
 			*collisionY = y0;
-			return false; // end of the line
+			return -1; // end of the line
 		}
 		e2 = err;
 		if (e2 > -dx) {
 			err -= dy;
 			char futureX = x0 + sx;
-			if (VGAX::getpixel(futureX, y0) != COLOR_BLUE) {
+			return_color = VGAX::getpixel(futureX, y0);
+			if (return_color != COLOR_BLUE) {
 				break;
 			}
 			x0 = futureX;
@@ -38,34 +41,28 @@ bool bresenham(char x0, char y0, char x1, char y1, char * collisionX, char * col
 		if (e2 < dy) {
 			err += dx;
 			char futureY = y0 + sy;
-			if (VGAX::getpixel(x0, futureY) != COLOR_BLUE) {
+			return_color = VGAX::getpixel(x0, futureY);
+			if (return_color != COLOR_BLUE) {
 				break;
 			}
 			y0 = futureY;
 		}
 	}
 
-	*collisionX = x0;
-	*collisionY = y0;
-	return true;
+	return return_color;
 }
 
-void Character::update() {
+bool Character::update() {
 	int sx = analogRead(PIN_STICK_X);
-	int sy = analogRead(PIN_STICK_Y);
 
 	this->vel.x += sx - 512 >> 7;
-	if (sy < 512 - SENSIBILITY) this->vel.y -= 3;
 
 	if (this->vel.y < 6) ++this->vel.y;
 
 	this->prev_x = this->x;
 	this->prev_y = this->y;
 
-	// this->x += this->vel.x;
-	// this->y += this->vel.y;
-
-	bool collide = bresenham(
+	char color_collide = bresenham(
 		this->x,
 		this->y,
 		this->x + this->vel.x,
@@ -74,8 +71,12 @@ void Character::update() {
 		&this->y
 	);
 
-	if (collide) {
+	if (color_collide == COLOR_YELLOW || this->x >= VGAX_HEIGHT) {
+		return true; // character died
+	}
+	if (color_collide != -1) {
 		this->vel.y = 0;
+		if (digitalRead(PIN_BUTTON_B) == HIGH) this->vel.y = -6;
 	}
 	this->vel.x = 0;
 
@@ -83,4 +84,5 @@ void Character::update() {
 	// VGAX::fillrect(10, 10, 50, 30, COLOR_BLUE);
 	//drawInt(collisionX, 10, 10, COLOR_YELLOW);
 	//drawInt(collisionY, 10, 20, COLOR_YELLOW);
+	return false;
 }

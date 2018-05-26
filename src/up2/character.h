@@ -16,7 +16,7 @@ public:
 public:
 	Character(signed char x_, signed char y_);
 	void draw();
-	void update();
+	bool update();
 };
 
 #endif /* CHARACTER_H */
