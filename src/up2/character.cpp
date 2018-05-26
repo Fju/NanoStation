@@ -15,18 +15,39 @@ void Character::draw() {
 	VGAX::putpixel(this->x, this->y, COLOR_WHITE);
 }
 
-void bresenham(char x0, char y0, char x1, char y1) {
+bool bresenham(char x0, char y0, char x1, char y1, char * collisionX, char * collisionY) {
 	char dx = abs(x1-x0), sx = x0<x1 ? 1 : -1;
 	char dy = abs(y1-y0), sy = y0<y1 ? 1 : -1;
 	char err = (dx>dy ? dx : -dy)/2, e2;
 
 	for(;;) {
-		VGAX::putpixel(x0, y0, COLOR_WHITE);
-		if (x0==x1 && y0==y1) return; // end of the line
+		if (x0==x1 && y0==y1) {
+			*collisionX = x0;
+			*collisionY = y0;
+			return false; // end of the line
+		}
 		e2 = err;
-		if (e2 >-dx) { err -= dy; x0 += sx; }
-		if (e2 < dy) { err += dx; y0 += sy; }
+		if (e2 > -dx) {
+			err -= dy;
+			char futureX = x0 + sx;
+			if (VGAX::getpixel(futureX, y0) != COLOR_BLUE) {
+				break;
+			}
+			x0 = futureX;
+		}
+		if (e2 < dy) {
+			err += dx;
+			char futureY = y0 + sy;
+			if (VGAX::getpixel(x0, futureY) != COLOR_BLUE) {
+				break;
+			}
+			y0 = futureY;
+		}
 	}
+
+	*collisionX = x0;
+	*collisionY = y0;
+	return true;
 }
 
 void Character::update() {
@@ -44,10 +65,22 @@ void Character::update() {
 	// this->x += this->vel.x;
 	// this->y += this->vel.y;
 
+	bool collide = bresenham(
+		this->x,
+		this->y,
+		this->x + this->vel.x,
+		this->y + this->vel.y,
+		&this->x,
+		&this->y
+	);
+
+	if (collide) {
+		this->vel.y = 0;
+	}
+	this->vel.x = 0;
+
 	// logging
 	// VGAX::fillrect(10, 10, 50, 30, COLOR_BLUE);
-	// drawInt(this->vel.x, 10, 10, COLOR_YELLOW);
-	// drawInt(this->vel.y, 10, 20, COLOR_YELLOW);
-
-	bresenham(10, 10, 11, 12);
+	//drawInt(collisionX, 10, 10, COLOR_YELLOW);
+	//drawInt(collisionY, 10, 20, COLOR_YELLOW);
 }

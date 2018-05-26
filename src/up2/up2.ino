@@ -17,7 +17,7 @@ Platform platforms[PLATFORM_AMOUNT] = {
 	Platform(80, 0, 40, 20),
 };
 
-Character character = Character(0, 0);
+Character character = Character(10, 48);
 
 void draw_platforms(byte color) {
 	platforms[0].draw(COLOR_BLACK); // the first platform doesn't blink
@@ -26,7 +26,7 @@ void draw_platforms(byte color) {
 	}
 }
 
-bool platform_color = 0;
+bool platform_color = COLOR_BLACK;
 byte platform_blink_counter = BLINK_INTERVAL; // so that it triggers the first paint
 
 void setup() {
@@ -36,11 +36,13 @@ void setup() {
 
 
 void loop() {
+	VGAX::clear(COLOR_BLUE);
+
 	// platform color updates
 	if (platform_blink_counter == BLINK_INTERVAL) {
-		platform_color = (platform_color+3)%6; // more efficient lel
-		draw_platforms(platform_color);
+		platform_color = platform_color == COLOR_BLACK ? COLOR_YELLOW : COLOR_BLACK;
 	}
+	draw_platforms(platform_color); // TODO: only when there is an update
 	platform_blink_counter = (platform_blink_counter + 1) % BLINK_INTERVAL + 1;
 
 	// character pos updates
