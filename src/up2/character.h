@@ -10,6 +10,7 @@ public:
 	byte prev_y;
 	byte x;
 	byte y;
+	bool colliding;
 
 	Vector vel;
 

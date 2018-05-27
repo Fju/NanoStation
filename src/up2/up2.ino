@@ -7,29 +7,26 @@
 #include "platform.h"
 #include "character.h"
 
-#define PLATFORM_AMOUNT 4
 #define BLINK_INTERVAL 100
 
 #define INIT_POS_X 10
 #define INIT_POS_Y 48
 
-Platform platforms[PLATFORM_AMOUNT] = {
+Platform platforms[] = {
 	Platform(0, 50, 20, 5),
 	Platform(30, 30, 20, 20),
 	Platform(70, 30, 20, 20),
-	Platform(80, 0, 40, 20),
+	// Platform(80, 0, 40, 20),
 };
 
 const char str_game_over[] PROGMEM = "GAME OVER";
 const char str_instructions[] PROGMEM = "PRESS A BUTTON TO START";
-byte width_game_over = getWidth(str_game_over, true);
-byte width_instr = getWidth(str_instructions, true);
 
 Character character = Character(INIT_POS_X, INIT_POS_Y);
 
 void draw_platforms(byte color) {
 	platforms[0].draw(COLOR_BLACK); // the first platform doesn't blink
-	for (byte i = 1; i != PLATFORM_AMOUNT; ++i) {
+	for (byte i = 1; i != sizeof(platforms) / sizeof(Platform); ++i) {
 		platforms[i].draw(color);
 	}
 }
@@ -43,6 +40,9 @@ void setup() {
 }
 
 void gameover_screen() {
+	byte width_game_over = getWidth(str_game_over, true);
+	byte width_instr = getWidth(str_instructions, true);
+
 	VGAX::clear(COLOR_BLUE);
 	drawTextPROGMEM(str_game_over, (VGAX_WIDTH - width_game_over) / 2, 20, COLOR_WHITE);
 	drawTextPROGMEM(str_instructions, (VGAX_WIDTH - width_instr) / 2, 40, COLOR_WHITE);
@@ -65,10 +65,10 @@ void loop() {
 
 	// character pos updates
 	bool died = character.update();
-	if (died) gameover_screen();
 
 	// paints
 	character.draw();
+	if (died) gameover_screen();
 
 	VGAX::delay(33);
 }

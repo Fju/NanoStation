@@ -20,21 +20,23 @@ char bresenham(char x0, char y0, char x1, char y1, char * collisionX, char * col
 	char dy = abs(y1-y0), sy = y0<y1 ? 1 : -1;
 	char err = (dx>dy ? dx : -dy)/2, e2;
 
-	char return_color = -1;
+	char return_color = COLOR_BLUE;
 
 	for(;;) {
-		if (x0==x1 && y0==y1) {
-			*collisionX = x0;
-			*collisionY = y0;
-			return -1; // end of the line
+		if (x0 >= x1 && y0 >= y1) {
+			*collisionX = x1;
+			*collisionY = y1;
+			return return_color; // end of the line
 		}
+
 		e2 = err;
 		if (e2 > -dx) {
 			err -= dy;
 			char futureX = x0 + sx;
 			return_color = VGAX::getpixel(futureX, y0);
 			if (return_color != COLOR_BLUE) {
-				break;
+				--x1;
+				continue;
 			}
 			x0 = futureX;
 		}
@@ -43,7 +45,8 @@ char bresenham(char x0, char y0, char x1, char y1, char * collisionX, char * col
 			char futureY = y0 + sy;
 			return_color = VGAX::getpixel(x0, futureY);
 			if (return_color != COLOR_BLUE) {
-				break;
+				--y1;
+				continue;
 			}
 			y0 = futureY;
 		}
@@ -71,18 +74,18 @@ bool Character::update() {
 		&this->y
 	);
 
-	if (color_collide == COLOR_YELLOW || this->x >= VGAX_HEIGHT) {
+	if (color_collide == COLOR_YELLOW || this->y >= VGAX_HEIGHT) {
 		return true; // character died
 	}
-	if (color_collide != -1) {
+	if (color_collide != COLOR_BLUE) {
 		this->vel.y = 0;
 		if (digitalRead(PIN_BUTTON_B) == HIGH) this->vel.y = -6;
 	}
 	this->vel.x = 0;
 
 	// logging
-	// VGAX::fillrect(10, 10, 50, 30, COLOR_BLUE);
-	//drawInt(collisionX, 10, 10, COLOR_YELLOW);
+	VGAX::fillrect(10, 10, 50, 30, COLOR_BLUE);
+	drawInt(color_collide, 10, 10, COLOR_YELLOW);
 	//drawInt(collisionY, 10, 20, COLOR_YELLOW);
 	return false;
 }
