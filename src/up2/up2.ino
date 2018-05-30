@@ -6,21 +6,19 @@
 
 #include "platform.h"
 #include "character.h"
+#include "screen.h"
 
 #define BLINK_INTERVAL 100
 
 #define INIT_POS_X 10
-#define INIT_POS_Y 48
+#define INIT_POS_Y 49
 
 Platform platforms[] = {
 	Platform(0, 50, 20, 5),
-	Platform(30, 30, 20, 20),
-	Platform(70, 30, 20, 20),
-	// Platform(80, 0, 40, 20),
+	Platform(30, 50, 30, 20),
+	Platform(70, 40, 20, 10),
+	Platform(80, 55, 40, 5),
 };
-
-const char str_game_over[] PROGMEM = "GAME OVER";
-const char str_instructions[] PROGMEM = "PRESS A BUTTON TO START";
 
 Character character = Character(INIT_POS_X, INIT_POS_Y);
 
@@ -34,25 +32,15 @@ void draw_platforms(byte color) {
 bool platform_color = COLOR_BLACK;
 byte platform_blink_counter = BLINK_INTERVAL; // so that it triggers the first paint
 
-void setup() {
-	VGAX::begin();
-	VGAX::clear(COLOR_BLUE);
-}
-
-void gameover_screen() {
-	byte width_game_over = getWidth(str_game_over, true);
-	byte width_instr = getWidth(str_instructions, true);
-
-	VGAX::clear(COLOR_BLUE);
-	drawTextPROGMEM(str_game_over, (VGAX_WIDTH - width_game_over) / 2, 20, COLOR_WHITE);
-	drawTextPROGMEM(str_instructions, (VGAX_WIDTH - width_instr) / 2, 40, COLOR_WHITE);
-
-	while (digitalRead(PIN_BUTTON_A) == LOW) {
-		VGAX::delay(33);
-	};
-	VGAX::clear(COLOR_BLUE);
+void clear() {
+	clear_screen();
 	draw_platforms(platform_color);
 	character = Character(INIT_POS_X, INIT_POS_Y);
+}
+
+void setup() {
+	VGAX::begin();
+	clear_screen();
 }
 
 void loop() {
@@ -64,11 +52,20 @@ void loop() {
 	platform_blink_counter = (platform_blink_counter + 1) % BLINK_INTERVAL + 1;
 
 	// character pos updates
-	bool died = character.update();
+	byte char_flag = character.update();
+	switch(char_flag) {
+		case FLAG_DIED:
+			gameover_screen();
+			clear();
+			break;
+		case FLAG_WON:
+			win_screen();
+			clear();
+			break;
+	}
 
 	// paints
 	character.draw();
-	if (died) gameover_screen();
 
 	VGAX::delay(33);
 }

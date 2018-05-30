@@ -55,7 +55,7 @@ char bresenham(char x0, char y0, char x1, char y1, char * collisionX, char * col
 	return return_color;
 }
 
-bool Character::update() {
+byte Character::update() {
 	int sx = analogRead(PIN_STICK_X);
 
 	this->vel.x += sx - 512 >> 7;
@@ -65,27 +65,40 @@ bool Character::update() {
 	this->prev_x = this->x;
 	this->prev_y = this->y;
 
+	char nextX = this->x + this->vel.x;
+	char nextY = this->y + this->vel.y;
+
+	// prevent from going out of screen
+	if (nextX <= 0) nextX = 0;
+	if (nextX > 120) nextX = 120;
+	if (nextY <= 0) nextY = 0;
+
+	if (nextY > 60) return FLAG_DIED; // you fell -> you die
+
 	char color_collide = bresenham(
 		this->x,
 		this->y,
-		this->x + this->vel.x,
-		this->y + this->vel.y,
+		nextX,
+		nextY,
 		&this->x,
 		&this->y
 	);
 
-	if (color_collide == COLOR_YELLOW || this->y >= VGAX_HEIGHT) {
-		return true; // character died
+	// logging
+	// VGAX::fillrect(10, 10, 50, 30, COLOR_BLUE);
+	// drawInt(color_collide, 10, 10, COLOR_YELLOW);
+	// drawInt(collisionY, 10, 20, COLOR_YELLOW);
+
+	switch(color_collide) {
+		case COLOR_YELLOW:
+			return FLAG_DIED;
+		case COLOR_WHITE:
+			return FLAG_WON;
 	}
 	if (color_collide != COLOR_BLUE) {
 		this->vel.y = 0;
 		if (digitalRead(PIN_BUTTON_B) == HIGH) this->vel.y = -6;
 	}
 	this->vel.x = 0;
-
-	// logging
-	VGAX::fillrect(10, 10, 50, 30, COLOR_BLUE);
-	drawInt(color_collide, 10, 10, COLOR_YELLOW);
-	//drawInt(collisionY, 10, 20, COLOR_YELLOW);
-	return false;
+	return FLAG_NOTHING;
 }
