@@ -34,9 +34,11 @@ char bresenham(char x0, char y0, char x1, char y1, char * collisionX, char * col
 			err -= dy;
 			char futureX = x0 + sx;
 			return_color = VGAX::getpixel(futureX, y0);
-			if (return_color != COLOR_BLUE) {
+			if (return_color == COLOR_BLACK) {
 				--x1;
 				continue;
+			} else if (return_color != COLOR_BLUE) {
+				return return_color;
 			}
 			x0 = futureX;
 		}
@@ -44,9 +46,11 @@ char bresenham(char x0, char y0, char x1, char y1, char * collisionX, char * col
 			err += dx;
 			char futureY = y0 + sy;
 			return_color = VGAX::getpixel(x0, futureY);
-			if (return_color != COLOR_BLUE) {
+			if (return_color == COLOR_BLACK) {
 				--y1;
 				continue;
+			} else if (return_color != COLOR_BLUE) {
+				return return_color;
 			}
 			y0 = futureY;
 		}
