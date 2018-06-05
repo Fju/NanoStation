@@ -4,6 +4,7 @@
 #include <VGAX.h>
 
 #define SENSIBILITY 200
+#define MAX_SPEED_Y 4
 
 // the character is just 1 pixel which simplifies collisions
 Character::Character(signed char x_, signed char y_) :
@@ -60,11 +61,9 @@ char bresenham(char x0, char y0, char x1, char y1, char * collisionX, char * col
 }
 
 byte Character::update() {
-	int sx = analogRead(PIN_STICK_X);
+	this->vel.x += this->getXDirection();
 
-	this->vel.x += sx - 512 >> 7;
-
-	if (this->vel.y < 6) ++this->vel.y;
+	if (this->vel.y < MAX_SPEED_Y) ++this->vel.y;
 
 	this->prev_x = this->x;
 	this->prev_y = this->y;
@@ -101,7 +100,7 @@ byte Character::update() {
 	}
 	if (color_collide != COLOR_BLUE) {
 		this->vel.y = 0;
-		if (digitalRead(PIN_BUTTON_B) == HIGH) this->vel.y = -6;
+		if (digitalRead(PIN_BUTTON_B) == HIGH) this->vel.y = -MAX_SPEED_Y;
 	}
 	this->vel.x = 0;
 	return FLAG_NOTHING;
