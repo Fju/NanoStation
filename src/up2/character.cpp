@@ -87,11 +87,6 @@ byte Character::update() {
 		&this->y
 	);
 
-	// logging
-	// VGAX::fillrect(10, 10, 50, 30, COLOR_BLUE);
-	// drawInt(color_collide, 10, 10, COLOR_YELLOW);
-	// drawInt(collisionY, 10, 20, COLOR_YELLOW);
-
 	switch(color_collide) {
 		case COLOR_YELLOW:
 			return FLAG_DIED;

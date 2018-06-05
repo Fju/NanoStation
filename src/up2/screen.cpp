@@ -1,6 +1,7 @@
 #include <VGAX.h>
 #include "nanostation.h"
 #include "text.h"
+#include "platform.h"
 
 const char str_game_over[] PROGMEM = "GAME OVER";
 const char str_won[] PROGMEM = "CONGRATS YOU WON";
@@ -27,7 +28,8 @@ void win_screen() {
 	screen(str_won, str_instructions);
 }
 
-void clear_screen() {
+void clear_screen(Platform * platform) {
 	VGAX::clear(COLOR_BLUE);
+	platform->draw(COLOR_BLACK);
 	VGAX::putpixel(107, 54, COLOR_WHITE);
 }

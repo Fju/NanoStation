@@ -3,8 +3,8 @@
 #include "text.h"
 #include <VGAX.h>
 
-Platform::Platform(signed char x_, signed char y_, byte width_, byte height_) :
-x(x_), y(y_), width(width_), height(height_) {
+Platform::Platform(signed char x_, signed char y_, byte width_, byte height_, byte frequency_) :
+x(x_), y(y_), width(width_), height(height_), frequency(frequency_) {
 }
 
 void Platform::draw(byte color) {

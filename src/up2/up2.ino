@@ -1,55 +1,57 @@
 #include <VGAX.h>
 #include <avr/pgmspace.h>
 
-#include "text.h"
 #include "nanostation.h"
 
 #include "platform.h"
 #include "character.h"
 #include "screen.h"
 
-#define BLINK_INTERVAL 100
-
 #define INIT_POS_X 10
 #define INIT_POS_Y 49
 
+Platform start_platform = Platform(0,  50, 20, 5,  32); // frequency is whatever, TODO: inherit from a base class
 Platform platforms[] = {
-	Platform(0, 50, 20, 5),
-	Platform(30, 50, 30, 20),
-	Platform(70, 40, 20, 10),
-	Platform(80, 55, 40, 5),
+	Platform(30, 50, 30, 20, 32),
+	Platform(70, 40, 20, 10, 32),
+	Platform(80, 55, 40, 5, 64),
+	Platform(30, 10, 5,  5, 64),
+	Platform(50, 10, 5,  5, 16),
+	Platform(60, 10, 5,  5, 32),
+	Platform(80, 10, 5,  5, 8),
 };
 
 Character character = Character(INIT_POS_X, INIT_POS_Y);
+byte time = 0;
 
-void draw_platforms(byte color) {
-	platforms[0].draw(COLOR_BLACK); // the first platform doesn't blink
-	for (byte i = 1; i != sizeof(platforms) / sizeof(Platform); ++i) {
-		platforms[i].draw(color);
+// logging
+// VGAX::fillrect(10, 10, 50, 30, COLOR_BLUE);
+// drawInt(color, 10, 10, COLOR_YELLOW);
+// drawInt(platforms[i].should_update(time), 10, 20, COLOR_YELLOW);
+
+void draw_platforms() {
+	for (byte i = 0; i != sizeof(platforms) / sizeof(Platform); ++i) {
+		if (platforms[i].should_update(time)) {
+			byte color = platforms[i].get_color(time);
+			platforms[i].draw(color);
+		}
 	}
 }
 
-bool platform_color = COLOR_BLACK;
-byte platform_blink_counter = BLINK_INTERVAL; // so that it triggers the first paint
-
 void clear() {
-	clear_screen();
-	draw_platforms(platform_color);
+	clear_screen(&start_platform);
+	draw_platforms();
 	character = Character(INIT_POS_X, INIT_POS_Y);
 }
 
 void setup() {
 	VGAX::begin();
-	clear_screen();
+	clear_screen(&start_platform);
 }
 
 void loop() {
 	// platform color updates
-	if (platform_blink_counter == BLINK_INTERVAL) {
-		platform_color = platform_color == COLOR_BLACK ? COLOR_YELLOW : COLOR_BLACK;
-		draw_platforms(platform_color);
-	}
-	platform_blink_counter = (platform_blink_counter + 1) % BLINK_INTERVAL + 1;
+	draw_platforms();
 
 	// character pos updates
 	byte char_flag = character.update();
@@ -67,5 +69,6 @@ void loop() {
 	// paints
 	character.draw();
 
+	time += 1;
 	VGAX::delay(33);
 }
