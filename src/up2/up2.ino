@@ -32,9 +32,7 @@ void setup() {
 	// while (!Serial);
 
 	// map initialization
-	load_map(0);
-	current_map = get_map();
-	platform_amount = get_amount();
+	platform_amount = load_map(0, &current_map);
 
 	// screen initialization
 	VGAX::begin();
