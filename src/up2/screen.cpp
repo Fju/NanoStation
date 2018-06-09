@@ -7,8 +7,10 @@
 #include "platform.h"
 
 const char str_game_over[] PROGMEM = "GAME OVER";
+const char str_next_level[] PROGMEM = "NEXT LEVEL";
 const char str_won[] PROGMEM = "CONGRATS YOU WON";
-const char str_instructions[] PROGMEM = "PRESS A BUTTON TO RESTART";
+const char str_restart[] PROGMEM = "PRESS BUTTON TO RESTART";
+const char str_continue[] PROGMEM = "PRESS BUTTON TO CONTINUE";
 
 void screen(char * line1, char * line2) {
 	byte width_game_over = getWidth(line1, true);
@@ -24,11 +26,15 @@ void screen(char * line1, char * line2) {
 }
 
 void gameover_screen() {
-	screen(str_game_over, str_instructions);
+	screen(str_game_over, str_restart);
+}
+
+void level_screen() {
+	screen(str_next_level, str_continue);
 }
 
 void win_screen() {
-	screen(str_won, str_instructions);
+	screen(str_won, str_restart);
 }
 
 void clear_screen() {

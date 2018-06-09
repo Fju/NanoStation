@@ -12,18 +12,21 @@
 Character character = Character();
 byte time = 0;
 
+byte map_id = 0;
 Platform * current_map;
 byte platform_amount;
 
 // logging
 // VGAX::fillrect(10, 10, 50, 30, COLOR_BLUE);
-// drawInt(color, 10, 10, COLOR_YELLOW);
 // drawInt(platforms[i].should_update(time), 10, 20, COLOR_YELLOW);
 
 
-void clear() {
+void reset() {
+	// screen init
 	clear_screen();
 	force_draw_platforms(current_map, platform_amount, time);
+	drawInt(map_id, 1, 1, COLOR_BLACK);
+
 	character = Character();
 }
 
@@ -31,12 +34,12 @@ void setup() {
 	// Serial.begin(9600);
 	// while (!Serial);
 
-	// map initialization
-	platform_amount = load_map(0, &current_map);
-
-	// screen initialization
 	VGAX::begin();
-	clear_screen();
+
+	// map initialization
+	platform_amount = load_map(map_id, &current_map);
+
+	reset();
 }
 
 void loop() {
@@ -48,11 +51,23 @@ void loop() {
 	switch(char_flag) {
 		case FLAG_DIED:
 			gameover_screen();
-			clear();
+			reset();
 			break;
 		case FLAG_WON:
-			win_screen();
-			clear();
+			if (map_id >= 1) { // finished the game
+				win_screen();
+
+				map_id = 0;
+			} else {
+				level_screen();
+
+				++map_id;
+			}
+
+			free(current_map);
+			platform_amount = load_map(map_id, &current_map);
+
+			reset();
 			break;
 	}
 
