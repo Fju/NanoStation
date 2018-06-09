@@ -34,8 +34,7 @@ void win_screen() {
 void clear_screen() {
 	VGAX::clear(COLOR_BLUE);
 
-	Platform start_platform = Platform(0,  50, 20, 5,  32); // frequency is whatever, TODO: inherit from a base class
-	start_platform.draw(COLOR_BLACK);
+	VGAX::fillrect(0, 50, 5, 2, COLOR_BLACK); // start platform
 	VGAX::putpixel(107, 54, COLOR_WHITE);
 }
 

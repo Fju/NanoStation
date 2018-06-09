@@ -6,7 +6,7 @@
 #define SENSIBILITY 200
 #define MAX_SPEED_Y 4
 
-#define INIT_POS_X 10
+#define INIT_POS_X 3
 #define INIT_POS_Y 49
 
 Character::Character() :
