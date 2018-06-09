@@ -21,6 +21,9 @@ public:
 	inline Platform(signed char x_, signed char y_, byte width_, byte height_, byte frequency_):
 	x(x_), y(y_), width(width_), height(height_), frequency(frequency_) {
 	}
+	inline Platform(byte settings[]):
+	Platform(settings[0], settings[1], settings[2], settings[3], settings[4]) {
+	}
 	inline void draw(byte color) {
 		VGAX::fillrect(this->x, this->y, this->width, this->height, color);
 	}

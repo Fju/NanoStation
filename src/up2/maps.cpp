@@ -41,7 +41,7 @@ byte load_map(byte id, Platform * * platforms_) {
 			tmp_settings[j] = pgm_read_byte((i * 5) + j + settings + 1); // + 1 because the first byte is the map size
 		}
 
-		platforms[i] = Platform(tmp_settings[0], tmp_settings[1], tmp_settings[2], tmp_settings[3], tmp_settings[4]);
+		platforms[i] = Platform(tmp_settings);
 	}
 
 	*platforms_ = platforms;
