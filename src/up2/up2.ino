@@ -6,7 +6,6 @@
 #include "character.h"
 #include "screen.h"
 #include "text.h"
-#include "platform.h"
 #include "maps.h"
 
 
@@ -21,18 +20,10 @@ byte platform_amount;
 // drawInt(color, 10, 10, COLOR_YELLOW);
 // drawInt(platforms[i].should_update(time), 10, 20, COLOR_YELLOW);
 
-void draw_platforms() {
-	for (byte i = 0; i != platform_amount; ++i) {
-		if (current_map[i].should_update(time)) {
-			byte color = current_map[i].get_color(time);
-			current_map[i].draw(color);
-		}
-	}
-}
 
 void clear() {
 	clear_screen();
-	draw_platforms();
+	force_draw_platforms(current_map, platform_amount, time);
 	character = Character();
 }
 
@@ -52,7 +43,7 @@ void setup() {
 
 void loop() {
 	// platform color updates
-	draw_platforms();
+	draw_platforms(current_map, platform_amount, time);
 
 	// character pos updates
 	byte char_flag = character.update();

@@ -2,13 +2,14 @@
 #include "maps.h"
 
 const PROGMEM byte settings[]  = {
-	3, // map size (in number of platforms)
-	30, 50, 30, 20, 32,
-	70, 40, 20, 10, 32,
-	80, 55, 40, 5, 64,
+	4, // map size (in number of platforms)
+	10, 50, 20, 10, 2,
+	30, 45, 30, 5, 2,
+	65, 43, 20, 10, 2,
+	80, 55, 40, 5, 4,
 };
 
-static byte map_buffer[sizeof(Platform) * 3]; // TODO: malloc it
+static byte map_buffer[sizeof(Platform) * 4]; // TODO: malloc it
 static byte platform_amount = 0;
 
 

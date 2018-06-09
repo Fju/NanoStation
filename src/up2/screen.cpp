@@ -38,4 +38,19 @@ void clear_screen() {
 	VGAX::putpixel(107, 54, COLOR_WHITE);
 }
 
+void draw_platforms(Platform * platforms, byte platform_amount, byte time) {
+	for (byte i = 0; i != platform_amount; ++i) {
+		if (platforms[i].should_update(time)) {
+			byte color = platforms[i].get_color(time);
+			platforms[i].draw(color);
+		}
+	}
+}
+void force_draw_platforms(Platform * platforms, byte platform_amount, byte time) {
+	for (byte i = 0; i != platform_amount; ++i) {
+		byte color = platforms[i].get_color(time);
+		platforms[i].draw(color);
+	}
+}
+
 #endif /* SCREEN_H */
