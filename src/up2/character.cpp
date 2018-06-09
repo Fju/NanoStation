@@ -106,3 +106,10 @@ byte Character::update() {
 	this->vel.x = 0;
 	return FLAG_NOTHING;
 }
+
+void Character::animate_death() {
+	for (byte i = 1; i <= 3; ++i) {
+		VGAX::fillrect(this->x - i, this->y - i, 1 + i*2, 1 + i*2, COLOR_WHITE);
+		VGAX::delay(33);
+	}
+}

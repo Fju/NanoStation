@@ -6,7 +6,6 @@
 #include "text.h"
 #include "platform.h"
 
-const char str_game_over[] PROGMEM = "GAME OVER";
 const char str_next_level[] PROGMEM = "NEXT LEVEL";
 const char str_won[] PROGMEM = "CONGRATS YOU WON";
 const char str_restart[] PROGMEM = "PRESS BUTTON TO RESTART";
@@ -23,10 +22,6 @@ void screen(char * line1, char * line2) {
 	while (digitalRead(PIN_BUTTON_A) == LOW) {
 		VGAX::delay(33);
 	};
-}
-
-void gameover_screen() {
-	screen(str_game_over, str_restart);
 }
 
 void level_screen() {

@@ -24,6 +24,7 @@ public:
 	Character(signed char x_, signed char y_);
 	Character();
 	void draw();
+	void animate_death();
 	byte update();
 	inline char getXDirection() {
 		int sx = analogRead(PIN_STICK_X);

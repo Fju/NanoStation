@@ -14,7 +14,7 @@ const PROGMEM byte blink[]  = {
 
 const PROGMEM byte obstacle[]  = {
 	2, // map size (in number of platforms)
-	65, 53, 2, 2, 64,
+	30, 53, 2, 2, 64,
 	0, 55, 120, 5, 2,
 };
 

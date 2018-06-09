@@ -50,7 +50,7 @@ void loop() {
 	byte char_flag = character.update();
 	switch(char_flag) {
 		case FLAG_DIED:
-			gameover_screen();
+			character.animate_death();
 			reset();
 			break;
 		case FLAG_WON:
