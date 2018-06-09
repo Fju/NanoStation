@@ -54,7 +54,7 @@ void loop() {
 			reset();
 			break;
 		case FLAG_WON:
-			if (map_id >= map_amount) { // finished the game
+			if (map_id + 1 >= map_amount) { // finished the game
 				win_screen();
 
 				map_id = 0;

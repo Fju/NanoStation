@@ -28,9 +28,13 @@ public:
 		VGAX::fillrect(this->x, this->y, this->width, this->height, color);
 	}
 	inline byte get_color(byte time) {
+		if (frequency == 0) return COLOR_BLACK;
+
 		return (time/(256/this->frequency))%2 ? COLOR_BLACK : COLOR_YELLOW;
 	}
 	inline bool should_update(byte time) {
+		if (frequency == 0) return false;
+
 		return time % (256/this->frequency) == 0;
 	}
 };

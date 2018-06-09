@@ -2,24 +2,29 @@
 #define MAPS_H
 #include "platform.h"
 
-const PROGMEM byte map0[]  = {
+const PROGMEM byte tutorial[]  = {
+	1, // map size (in number of platforms)
+	0, 55, 120, 5, 0,
+};
+
+const PROGMEM byte blink[]  = {
 	1, // map size (in number of platforms)
 	0, 55, 120, 5, 2,
 };
 
-const PROGMEM byte map1[]  = {
+const PROGMEM byte obstacle[]  = {
 	2, // map size (in number of platforms)
 	65, 53, 2, 2, 64,
 	0, 55, 120, 5, 2,
 };
 
-const PROGMEM byte map2[]  = {
+const PROGMEM byte big_obstacle[]  = {
 	2, // map size (in number of platforms)
-	65, 50, 5, 5, 8,
-	0, 55, 120, 5, 2,
+	30, 50, 5, 5, 16,
+	0, 55, 120, 5, 0,
 };
 
-const PROGMEM byte map3[]  = {
+const PROGMEM byte fju[]  = { // this one is dedicated to you @Fju :D
 	4, // map size (in number of platforms)
 	10, 50, 20, 10, 2,
 	30, 45, 30, 5, 2,
@@ -28,10 +33,11 @@ const PROGMEM byte map3[]  = {
 };
 
 const short maps[] = {
-	map0,
-	map1,
-	map2,
-	map3,
+	tutorial,
+	blink,
+	obstacle,
+	big_obstacle,
+	fju,
 };
 
 const byte map_amount = sizeof(maps) / sizeof(short);
