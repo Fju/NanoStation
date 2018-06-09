@@ -6,6 +6,12 @@
 #define SENSIBILITY 200
 #define MAX_SPEED_Y 4
 
+#define INIT_POS_X 10
+#define INIT_POS_Y 49
+
+Character::Character() :
+Character(INIT_POS_X, INIT_POS_Y) {
+}
 // the character is just 1 pixel which simplifies collisions
 Character::Character(signed char x_, signed char y_) :
 x(x_), y(y_), prev_x(x_), prev_y(y_), vel(0, 0) {

@@ -1,3 +1,6 @@
+#ifndef SCREEN_H
+#define SCREEN_H
+
 #include <VGAX.h>
 #include "nanostation.h"
 #include "text.h"
@@ -28,8 +31,12 @@ void win_screen() {
 	screen(str_won, str_instructions);
 }
 
-void clear_screen(Platform * platform) {
+void clear_screen() {
 	VGAX::clear(COLOR_BLUE);
-	platform->draw(COLOR_BLACK);
+
+	Platform start_platform = Platform(0,  50, 20, 5,  32); // frequency is whatever, TODO: inherit from a base class
+	start_platform.draw(COLOR_BLACK);
 	VGAX::putpixel(107, 54, COLOR_WHITE);
 }
+
+#endif /* SCREEN_H */

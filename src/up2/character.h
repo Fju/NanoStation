@@ -10,6 +10,7 @@
 
 #define MAX_SPEED_X 2
 
+// the character is just 1 pixel which simplifies collisions
 class Character {
 public:
 	byte prev_x;
@@ -21,6 +22,7 @@ public:
 
 public:
 	Character(signed char x_, signed char y_);
+	Character();
 	void draw();
 	byte update();
 	inline char getXDirection() {
