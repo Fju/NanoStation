@@ -79,11 +79,11 @@ byte Character::update() {
 	char nextY = this->y + this->vel.y;
 
 	// prevent from going out of screen
-	if (nextX <= 0) nextX = 0;
-	if (nextX > 120) nextX = 120;
-	if (nextY <= 0) nextY = 0;
+	if (nextX < 0) nextX = 0;
+	if (nextX >= SCREEN_WIDTH) nextX = SCREEN_WIDTH - 1;
+	if (nextY < 0) nextY = 0;
 
-	if (nextY > 60) return FLAG_DIED; // you fell -> you die
+	if (nextY >= SCREEN_HEIGHT) return FLAG_DIED; // you fell -> you die
 
 	char color_collide = bresenham(
 		this->x,
@@ -105,7 +105,7 @@ byte Character::update() {
 	// going down & colliding means that
 	// - the character is on the ground
 	// - the character is wall-jumping
-	this->can_jump = colliding && this->vel.y > 0;
+	this->can_jump = colliding && this->vel.y >= 0;
 
 	if (colliding) {
 		this->vel.y = 0;

@@ -14,4 +14,8 @@
 #define COLOR_BLACK   0
 
 
+#define SCREEN_WIDTH  120
+#define SCREEN_HEIGHT 60
+
+
 #endif /* NANOSTATION_H */
