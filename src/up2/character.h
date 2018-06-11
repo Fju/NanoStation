@@ -17,7 +17,7 @@ public:
 	byte prev_y;
 	byte x;
 	byte y;
-
+	bool can_jump;
 	Vector vel;
 
 public:

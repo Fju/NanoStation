@@ -4,7 +4,7 @@
 #include <VGAX.h>
 
 #define SENSIBILITY 200
-#define MAX_SPEED_Y 4
+#define MAX_SPEED_Y 3
 
 #define INIT_POS_X 3
 #define INIT_POS_Y 49
@@ -14,7 +14,7 @@ Character(INIT_POS_X, INIT_POS_Y) {
 }
 // the character is just 1 pixel which simplifies collisions
 Character::Character(signed char x_, signed char y_) :
-x(x_), y(y_), prev_x(x_), prev_y(y_), vel(0, 0) {
+x(x_), y(y_), prev_x(x_), prev_y(y_), vel(0, 0), can_jump(false) {
 }
 
 void Character::draw() {
@@ -70,6 +70,7 @@ byte Character::update() {
 	this->vel.x += this->getXDirection();
 
 	if (this->vel.y < MAX_SPEED_Y) ++this->vel.y;
+	if (digitalRead(PIN_BUTTON_B) == HIGH && this->can_jump) this->vel.y = -MAX_SPEED_Y;
 
 	this->prev_x = this->x;
 	this->prev_y = this->y;
@@ -99,11 +100,18 @@ byte Character::update() {
 		case COLOR_WHITE:
 			return FLAG_WON;
 	}
-	if (color_collide != COLOR_BLUE) {
+	bool colliding = color_collide != COLOR_BLUE;
+
+	// going down & colliding means that
+	// - the character is on the ground
+	// - the character is wall-jumping
+	this->can_jump = colliding && this->vel.y > 0;
+
+	if (colliding) {
 		this->vel.y = 0;
-		if (digitalRead(PIN_BUTTON_B) == HIGH) this->vel.y = -MAX_SPEED_Y;
 	}
 	this->vel.x = 0;
+
 	return FLAG_NOTHING;
 }
 

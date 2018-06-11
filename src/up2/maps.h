@@ -11,13 +11,13 @@ const PROGMEM byte tutorial[]  = {
 
 const PROGMEM byte blink[]  = {
 	1, // map size (in number of platforms)
-	0, 55, 120, 5, 2, 0,
+	0, 55, 120, 5, 2, 96,
 };
 
 const PROGMEM byte obstacle[]  = {
 	2, // map size (in number of platforms)
 	30, 53, 2,   2, 64, 0,
-	0,  55, 120, 5, 2,  0,
+	0,  55, 120, 5, 2,  112,
 };
 
 const PROGMEM byte big_obstacle[]  = {
@@ -28,25 +28,25 @@ const PROGMEM byte big_obstacle[]  = {
 
 const PROGMEM byte fju[]  = { // this one is dedicated to you @Fju :D
 	4, // map size (in number of platforms)
-	10, 50, 20, 10, 2, 0,
-	30, 45, 30, 5,  2, 0,
-	65, 43, 20, 10, 2, 0,
-	80, 55, 40, 5,  4, 0,
+	10, 50, 20, 10, 2, 96,
+	30, 45, 30, 5,  2, 96,
+	65, 43, 20, 10, 2, 96,
+	80, 55, 40, 5,  4, 96,
 };
 
 const PROGMEM byte origin[]  = {
 	4, // map size (in number of platforms)
-	10, 50, 22, 10, 4, 0,
+	10, 50, 22, 10, 4, 48,
 	35, 50, 22, 10, 0, 0,
-	60, 50, 22, 10, 4, 0,
+	60, 50, 22, 10, 4, 48,
 	82, 55, 40, 5,  0, 0,
 };
 
 const PROGMEM byte blinking_origin[]  = {
 	4, // map size (in number of platforms)
-	10, 50, 22, 10, 4, 0,
-	35, 50, 22, 10, 4, 64,
-	60, 50, 22, 10, 4, 0,
+	10, 50, 22, 10, 4, 32,
+	35, 50, 22, 10, 4, 224,
+	60, 50, 22, 10, 4, 32,
 	82, 55, 40, 5,  0, 0,
 };
 
@@ -57,7 +57,7 @@ const PROGMEM byte stairs[]  = {
 	15, 35, 5,  5, 0, 0,
 	20, 30, 5,  5, 0, 0,
 	25, 25, 5,  5, 0, 0,
-	44, 55, 76, 5, 0, 0,
+	45, 55, 75, 5, 0, 0,
 };
 
 const short maps[] = {

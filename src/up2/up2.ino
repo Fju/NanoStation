@@ -10,7 +10,7 @@
 
 
 Character character = Character();
-byte time = 0;
+byte time;
 
 byte map_id = 0;
 Platform * current_map;
@@ -23,6 +23,7 @@ byte platform_amount;
 
 void reset() {
 	// screen init
+	time = 0;
 	clear_screen();
 	force_draw_platforms(current_map, platform_amount, time);
 	drawInt(map_id, 1, 1, COLOR_BLACK);
