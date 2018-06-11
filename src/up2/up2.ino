@@ -29,6 +29,7 @@ void reset() {
 	drawInt(map_id, 1, 1, COLOR_BLACK);
 
 	character = Character();
+	character.force_draw();
 }
 
 void setup() {

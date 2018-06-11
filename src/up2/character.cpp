@@ -1,26 +1,6 @@
 #include "character.h"
 #include "nanostation.h"
 #include "text.h"
-#include <VGAX.h>
-
-#define SENSIBILITY 200
-#define MAX_SPEED_Y 3
-
-#define INIT_POS_X 3
-#define INIT_POS_Y 49
-
-Character::Character() :
-Character(INIT_POS_X, INIT_POS_Y) {
-}
-// the character is just 1 pixel which simplifies collisions
-Character::Character(signed char x_, signed char y_) :
-x(x_), y(y_), prev_x(x_), prev_y(y_), vel(0, 0), can_jump(false) {
-}
-
-void Character::draw() {
-	VGAX::putpixel(this->prev_x, this->prev_y, COLOR_BLUE);
-	VGAX::putpixel(this->x, this->y, COLOR_WHITE);
-}
 
 char bresenham(char x0, char y0, char x1, char y1, char * collisionX, char * collisionY) {
 	char dx = abs(x1-x0), sx = x0<x1 ? 1 : -1;
@@ -67,28 +47,21 @@ char bresenham(char x0, char y0, char x1, char y1, char * collisionX, char * col
 }
 
 byte Character::update() {
-	this->vel.x += this->getXDirection();
-
-	if (this->vel.y < MAX_SPEED_Y) ++this->vel.y;
-	if (digitalRead(PIN_BUTTON_B) == HIGH && this->can_jump) this->vel.y = -MAX_SPEED_Y;
+	this->handle_jump();
 
 	this->prev_x = this->x;
 	this->prev_y = this->y;
 
-	char nextX = this->x + this->vel.x;
-	char nextY = this->y + this->vel.y;
-
+	char next_x = this->get_next_x();
+	char nextY = this->y + this->vel_y;
 	// prevent from going out of screen
-	if (nextX < 0) nextX = 0;
-	if (nextX >= SCREEN_WIDTH) nextX = SCREEN_WIDTH - 1;
 	if (nextY < 0) nextY = 0;
-
 	if (nextY >= SCREEN_HEIGHT) return FLAG_DIED; // you fell -> you die
 
 	char color_collide = bresenham(
 		this->x,
 		this->y,
-		nextX,
+		next_x,
 		nextY,
 		&this->x,
 		&this->y
@@ -100,24 +73,16 @@ byte Character::update() {
 		case COLOR_WHITE:
 			return FLAG_WON;
 	}
-	bool colliding = color_collide != COLOR_BLUE;
+	register bool colliding = color_collide != COLOR_BLUE;
 
 	// going down & colliding means that
 	// - the character is on the ground
 	// - the character is wall-jumping
-	this->can_jump = colliding && this->vel.y >= 0;
+	this->can_jump = colliding && this->vel_y >= 0;
 
 	if (colliding) {
-		this->vel.y = 0;
+		this->vel_y = 0;
 	}
-	this->vel.x = 0;
 
 	return FLAG_NOTHING;
-}
-
-void Character::animate_death() {
-	for (byte i = 1; i <= 3; ++i) {
-		VGAX::fillrect(this->x - i, this->y - i, 1 + i*2, 1 + i*2, COLOR_WHITE);
-		VGAX::delay(33);
-	}
 }

@@ -1,18 +1,15 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
 
-#include "vector.h"
-#include "character.h"
 #include <VGAX.h>
 #include "nanostation.h"
 #include "text.h"
 
 // there's a lot of ugly inline stuff but it's f4st3rrrrr!
 class Platform {
-public:
+private:
 	byte x;
 	byte y;
-protected:
 	byte width;
 	byte height;
 	byte frequency; // has to be a power of 2
