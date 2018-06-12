@@ -18,10 +18,10 @@
 // the character is just 1 pixel which simplifies collisions
 class Character {
 private:
-	byte prev_x;
-	byte prev_y;
-	byte x;
-	byte y;
+	char prev_x;
+	char prev_y;
+	char x;
+	char y;
 	char vel_y;
 	bool can_jump;
 	byte jump_time;
