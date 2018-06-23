@@ -52,23 +52,23 @@ const PROGMEM byte blinking_origin[]  = {
 
 const PROGMEM byte stairs[]  = {
 	8, // map size (in number of platforms)
-	5,  45, 5,  5, 0, 0,
-	10, 40, 5,  5, 0, 0,
-	15, 35, 5,  5, 0, 0,
-	20, 30, 5,  5, 0, 0,
-	25, 25, 5,  5, 0, 0,
-	30, 20, 5,  5, 0, 0,
-	35, 15, 5,  5, 0, 0,
-	49, 55, 80, 5, 0, 0,
+	5,  45, 4,  4, 0, 0,
+	10, 40, 4,  4, 0, 0,
+	15, 35, 4,  4, 0, 0,
+	20, 30, 4,  4, 0, 0,
+	25, 25, 4,  4, 0, 0,
+	30, 20, 4,  4, 0, 0,
+	35, 15, 4,  4, 0, 0,
+	62, 55, 58, 5, 0, 0,
 };
 
 const short maps[] = {
-	stairs,
 	tutorial,
 	blink,
 	obstacle,
 	big_obstacle,
 	fju,
+	stairs,
 	origin,
 	blinking_origin,
 };
