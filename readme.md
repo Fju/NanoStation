@@ -7,7 +7,7 @@
 Inspired by [this](https://github.com/smaffer/vgax) library, I got the idea of creating a DIY "gaming console" based on an Arduino board. The challange was to not use expensive breakout boards or large microcontrollers. After some weeks of programming, soldering and manufacturing I managed to fit the Arduino Nano with batteries (6x 1.5V) and some basic gamepad-like buttons and joystick into a small grey box which is the "Arduino Game Station" that everyone is able to build theirselves.
 Also special thanks to my dad who helped me wiring and soldering the whole device.
 
-##Ok, wait, contain your excitement...
+## Ok, wait, contain your excitement...
 
 There are plenty limitations I need to mention. First of all the chip that is responsible of running the game and displaying the graphics has 32 kB of Program Memory (PROGMEM) and 2 kB of SRAM, which is veeeery small. Compared to Gaming PC or Laptop with 8 GB or more of RAM, the Arduino Nano or rather the ATmega328 chip can't really offer that much of computing power aaand we've only got one chip that needs to complete all tasks which are usually managed by RAM, CPU and GPU seperatly.
 As a result of this the resolution the ATmega328 can offer is 120x60 pixels with 2 bit of colour depth at 60 frames per second. The resolution of modern PC's is probably 1920x1080 with 32 bit of colour depth.
@@ -78,18 +78,3 @@ I recommend that if you're building your own console you should take a look at g
 If you want to code your own game take a look at the wiki or contact me via e-mail. Nevertheless you can also use my version of snake on it by just uploading the Arduino code onto the Arduino Nano board.
 
 _Happy Hacking!_
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
